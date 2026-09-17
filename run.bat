@@ -1,0 +1,3 @@
+@echo off
+echo Starting Bhel Shop POS Application on network...
+npm run dev -- --host
