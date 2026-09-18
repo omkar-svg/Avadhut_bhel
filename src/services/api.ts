@@ -1,8 +1,17 @@
-// Use the address the POS was opened from. This lets a phone on the same Wi-Fi
-// reach the API running on the computer instead of trying to use the phone's
-// own localhost. Set VITE_API_URL when the API is hosted elsewhere.
-const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/$/, '')
-  || `${window.location.protocol}//${window.location.hostname}:3001/api`;
+// Use environment variable if provided, otherwise default to local server in development
+// or the deployed Vercel backend in production.
+const isLocalhost =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname.startsWith('192.168.') ||
+    window.location.hostname.startsWith('10.'));
+
+const DEFAULT_API = isLocalhost
+  ? `${window.location.protocol}//${window.location.hostname}:3001/api`
+  : 'https://backend-omkar-07be.vercel.app/api';
+
+const API_BASE = (import.meta.env.VITE_API_URL || DEFAULT_API).replace(/\/$/, '');
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
