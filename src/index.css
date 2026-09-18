@@ -1,9 +1,37 @@
 @import "tailwindcss";
 
 @layer base {
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+  html {
+    /* Prevent font scaling in landscape on iOS and disable 300ms tap delay */
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
   body {
     background-color: var(--color-gray-50);
     color: var(--color-gray-900);
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  #root {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  input, textarea, select {
+    user-select: text;
   }
 }
 
@@ -20,22 +48,93 @@
   --color-brand-900: #7c2d12;
 }
 
+/* ── Hide scrollbar but keep scrolling ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Modal & Pop-up Animations ── */
+@keyframes modalPopup {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes sheetSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toastSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.animate-popup {
+  animation: modalPopup 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-sheet {
+  animation: sheetSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-toast-slide-down {
+  animation: toastSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* ── Safe areas for modern mobile devices (iPhone notch & home bar) ── */
+.safe-bottom {
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.safe-top {
+  padding-top: max(12px, env(safe-area-inset-top));
+}
+
+/* ── Print styles ── */
 @media print {
   @page {
     margin: 0;
-    size: 80mm 200mm; /* typical receipt printer roll size */
+    size: 80mm 200mm;
   }
-
   body {
     background-color: white !important;
     padding: 0 !important;
     margin: 0 !important;
   }
-
   .no-print {
     display: none !important;
   }
-  
   .print-only {
     display: block !important;
   }
